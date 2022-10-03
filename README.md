@@ -68,7 +68,7 @@ The result should be "62.9" — the score shown in Table 2.
 
 ## Replicate Experiments on SemEval-07 (Using DeBERTa-V3)
 
-1. Download SemEval-07 data at [http://www.dianamccarthy.co.uk/task10index.html](http://www.dianamccarthy.co.uk/task10index.html)
+1. Download SemEval-07 data ("All Gold Standard and Scoring Data") at [http://www.dianamccarthy.co.uk/task10index.html](http://www.dianamccarthy.co.uk/task10index.html)
 
 2. Prepare input files using the following command:
 
