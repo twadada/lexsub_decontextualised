@@ -36,7 +36,7 @@ This will produce the file "microsoft_deberta-v3-large_beam_50lambda_val0.7_cand
 folder=Result
 model=microsoft/deberta-v3-large
 candidates=Result/microsoft_deberta-v3-large_beam_50lambda_val0.7_candidates2cossim_score.pkl
-tgt_sent="swords_masked_sent_test.txt"
+tgt_sent=swords_masked_sent_test.txt
 CUDA_VISIBLE_DEVICES=0 python reranking.py -candidates ${candidates} -folder ${folder} -model ${model} -tgt_sent ${tgt_sent}
 ```
 This will produce the file "microsoft_deberta-v3-large_candidates2reranking_score.pkl" in the "Result" folder. 
@@ -83,7 +83,7 @@ This will produce "SemEval07_masked_sent.txt", "SemEval07_candidates.pkl" and Se
 folder=Result_SemEval
 model=microsoft/deberta-v3-large
 candidates=SemEval07_candidates.pkl
-tgt_sent="SemEval07_masked_sent.txt"
+tgt_sent=SemEval07_masked_sent.txt
 CUDA_VISIBLE_DEVICES=0 python reranking.py -candidates ${candidates} -folder ${folder} -model ${model} -tgt_sent ${tgt_sent}
 ```
 This will produce the file "microsoft_deberta-v3-large_candidates2reranking_score.pkl" in the "Result_SemEval" folder. 
@@ -101,3 +101,6 @@ python SemEval07_postprocess.py -file Result_SemEval/microsoft_deberta-v3-large_
 python jcs/evaluation/lst/lst_gap.py datasets/lst_all.gold ${out} result.txt no-mwe
 tail -n 1 result.txt
 ```
+
+## Replicate Italian Experiments (Using ELECTRA)
+todo
