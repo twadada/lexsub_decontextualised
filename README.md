@@ -3,7 +3,7 @@ Code for "Unsupervised Lexical Substitution with Decontextualised Embeddings" (C
 
 Decontextualised embeddings used in our paper are available at [this Bitbucket repository](https://bitbucket.org/TakashiW/lexical_substitution/src/main).
 
-## Replicate experiments on SWORDS (using DeBERTa-V3)
+## Replicate Experiments on SWORDS (Using DeBERTa-V3)
 
 1. Download decontextualised embeddings "deberta-v3-large.tar.bz2" from [this Bitbucket repository](https://bitbucket.org/TakashiW/lexical_substitution/src/main) and decompress the folder, e.g. using the command "tar -xf deberta-v3-large.tar.bz2".
 
