@@ -130,18 +130,18 @@ model_basename=$(basename "$model")
 vec="${model_basename}/K4/K0/vec3-10.txt ${model_basename}/K4/K1/vec3-10.txt ${model_basename}/K4/K2/vec3-10.txt ${model_basename}/K4/K3/vec3-10.txt"
 CUDA_VISIBLE_DEVICES=0 python generate.py -folder ${folder} -model ${model} -vec ${vec}  -tgt_sent ${tgt_sent} -lev 0.5 -beam_size 50
 ```
-This will produce the file "electra-base-italian-xxl-cased-discriminator_beam_50lambda_val0.7_candidates2cossim_score.pkl" in the "Result_Italian" folder. 
+This will produce the file "dbmdz_electra-base-italian-xxl-cased-discriminator_beam_50lambda_val0.7_candidates2cossim_score.pkl" in the "Result_Italian" folder. 
 
 5. Rerank the candidates using the following command:
 
 ```
 folder=Result_Italian
 model=dbmdz/electra-base-italian-xxl-cased-discriminator
-candidates=Result_Italian/electra-base-italian-xxl-cased-discriminator_beam_50lambda_val0.7_candidates2cossim_score.pkl
+candidates=Result_Italian/dbmdz_electra-base-italian-xxl-cased-discriminator_beam_50lambda_val0.7_candidates2cossim_score.pkl
 tgt_sent=Italian_masked_sent.txt
 CUDA_VISIBLE_DEVICES=0 python reranking.py -candidates ${candidates} -folder ${folder} -model ${model} -tgt_sent ${tgt_sent}
 ```
-This will produce the file "electra-base-italian-xxl-cased-discriminator_candidates2reranking_score.pkl" in the "Result_Italian" folder. 
+This will produce the file "dbmdz_electra-base-italian-xxl-cased-discriminator_candidates2reranking_score.pkl" in the "Result_Italian" folder. 
 
 6. Prepare files for the EVALITA-2009 evaluation script using the following command:
 (**This code requires the spaCy version be "3.2.2"**)
