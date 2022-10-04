@@ -66,6 +66,9 @@ parser.add_argument(
     help='model')
 
 opt = parser.parse_args()
+assert os.path.exists(opt.i)
+assert os.path.exists(opt.gold)
+
 nlp = spacy.load('it_core_news_sm')
 
 sentfile = "Italian_masked_sent.txt"
@@ -132,15 +135,15 @@ for i in tqdm(range(len(candidate_scores))):#lemmatise predicted candidates
     phrase_lemma2score_list.append(phrase_lemma2score_new)
 
 # Output files for oot and best evaluation
-lines = []
+tgt_words = []
 for line in open(opt.gold, errors='ignore'):
     line = line.rstrip("\n").split(" :: ")
-    lines.append(line[0])
+    tgt_words.append(line[0])
 
 with open(opt.i.split(".pkl")[0] + "_candidates-oot.txt", "w") as f:
     for i in range(len(phrase_lemma2score_list)):
         phrase_list = phrase_lemma2score_list[i][:10] #top 10
-        line = lines[i]+ " ::: "
+        line = tgt_words[i]+ " ::: "
         for j in range(len(phrase_list)):
             w, v=  phrase_list[j]
             line+=w
@@ -150,7 +153,7 @@ with open(opt.i.split(".pkl")[0] + "_candidates-oot.txt", "w") as f:
 with open(opt.i.split(".pkl")[0]+"_candidates-best.txt", "w") as f:
     for i in range(len(phrase_lemma2score_list)):
         phrase_list = phrase_lemma2score_list[i][:10]
-        line = lines[i]+ " :: "
+        line = tgt_words[i]+ " :: "
         for j in range(1): #top 1
             w, v=  phrase_list[j]
             line+=w
