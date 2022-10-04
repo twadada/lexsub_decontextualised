@@ -30,9 +30,9 @@ def pr_at_k(dataset_lists, result_lists, k=10, avg='macro', pct=True):
     # fs = (2 * p * rs) / (p + rs)
     mul = 100 if pct else 1
     return {
-      f'f@{k}': f * mul,
-      f'p@{k}': p * mul,
-      f'r@{k}': r * mul
+      f'f@{k}': round(f * mul, 2),
+      f'p@{k}': round(p * mul, 2),
+      f'r@{k}': round(r * mul,2)
     }
 
 def get_lemma2score(dict_tmp, pos):
