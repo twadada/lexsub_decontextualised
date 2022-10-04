@@ -98,13 +98,19 @@ python SemEval07_postprocess.py -file Result_SemEval/microsoft_deberta-v3-large_
 5. Clone [this GitHub repository](https://github.com/orenmel/lexsub), and run its following evaluation script:
 
 ```
-python jcs/evaluation/lst/lst_gap.py datasets/lst_all.gold ${out} result.txt no-mwe
+python2 jcs/evaluation/lst/lst_gap.py datasets/lst_all.gold ${out} result.txt no-mwe
 tail -n 1 result.txt
+```
+**The result should be "MEAN_GAP	0.649701137588" – the score shown in Table 2**. If you see the error "ImportError: No module named jcs.evaluation.measures.generalized_average_precision", add the following lines at "jcs/evaluation/lst/lst_gap.py" before "import GeneralizedAveragePrecision", and try again.
+
+```
+import os
+sys.path.append('path_to_the_cloned_dir')
 ```
 
 ## Replicate Italian Experiments (Using ELECTRA)
 
-1. Download decontextualised embeddings "electra-base-italian-xxl-cased-discriminator.tar.bz2" from [this Bitbucket repository](https://bitbucket.org/TakashiW/lexical_substitution/src/main).
+1. Download and decompress the decontextualised embeddings "electra-base-italian-xxl-cased-discriminator.tar.bz2" from [this Bitbucket repository](https://bitbucket.org/TakashiW/lexical_substitution/src/main).
 
 2. Download test data at the [EVALITA 2009 workshop page](https://www.evalita.it/campaigns/evalita-2009/tasks/lexical-substitution/)
 
@@ -124,18 +130,18 @@ model_basename=$(basename "$model")
 vec="${model_basename}/K4/K0/vec3-10.txt ${model_basename}/K4/K1/vec3-10.txt ${model_basename}/K4/K2/vec3-10.txt ${model_basename}/K4/K3/vec3-10.txt"
 CUDA_VISIBLE_DEVICES=0 python generate.py -folder ${folder} -model ${model} -vec ${vec}  -tgt_sent ${tgt_sent} -lev 0.5 -beam_size 50
 ```
-This will produce the file "electra-base-italian-xxl-cased-discriminator_beam_50lambda_val0.7_candidates2cossim_score.pkl" in the "Result_Italian" folder. 
+This will produce the file "dbmdz_electra-base-italian-xxl-cased-discriminator_beam_50lambda_val0.7_candidates2cossim_score.pkl" in the "Result_Italian" folder. 
 
 5. Rerank the candidates using the following command:
 
 ```
 folder=Result_Italian
 model=dbmdz/electra-base-italian-xxl-cased-discriminator
-candidates=Result_Italian/electra-base-italian-xxl-cased-discriminator_beam_50lambda_val0.7_candidates2cossim_score.pkl
+candidates=Result_Italian/dbmdz_electra-base-italian-xxl-cased-discriminator_beam_50lambda_val0.7_candidates2cossim_score.pkl
 tgt_sent=Italian_masked_sent.txt
 CUDA_VISIBLE_DEVICES=0 python reranking.py -candidates ${candidates} -folder ${folder} -model ${model} -tgt_sent ${tgt_sent}
 ```
-This will produce the file "electra-base-italian-xxl-cased-discriminator_candidates2reranking_score.pkl" in the "Result_Italian" folder. 
+This will produce the file "dbmdz_electra-base-italian-xxl-cased-discriminator_candidates2reranking_score.pkl" in the "Result_Italian" folder. 
 
 6. Prepare files for the EVALITA-2009 evaluation script using the following command:
 (**This code requires the spaCy version be "3.2.2"**)
