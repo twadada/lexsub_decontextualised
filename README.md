@@ -7,7 +7,7 @@ Decontextualised embeddings used in our English and Italian experiments are avai
 
 * Python 3 (tested on 3.6.10)
 * numpy
-* torch 1.7.1 or larger
+* torch 1.7.1
 * tqdm
 * spacy 3.2.2
 * Levenshtein 0.19.1
