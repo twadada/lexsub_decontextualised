@@ -126,7 +126,7 @@ for line in open(opt.folder+"/lexsub_test.xml", errors='ignore'):
         tgt_lemma_pos_list.append(tgt_lemma_pos)
         flag = False
 
-with open("Italian_maked.txt", "w") as f:
+with open("Italian_masked_sent.txt", "w") as f:
     for i in range(len(lines)):
         f.write(lines[i]+"\n")
 
