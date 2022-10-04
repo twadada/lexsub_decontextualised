@@ -2,6 +2,7 @@ import pickle
 import spacy
 assert spacy.__version__ == "3.2.2", spacy.__version__
 import argparse
+import os
 from tqdm import tqdm
 
 def pr_at_k(dataset_lists, result_lists, k=10, avg='macro', pct=True):
