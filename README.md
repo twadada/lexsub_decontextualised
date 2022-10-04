@@ -155,6 +155,6 @@ python EVALITA_postprocess.py -i Result_Italian/dbmdz_electra-base-italian-xxl-c
 7. Calculate "best" and "oot" scores using the following commands:
 ```
 folder=path_to_EVALITA_data
-perl ${folder}/score.pl Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score_candidates-oot.txt ${folder}/gold.test -t oot
-perl ${folder}/score.pl Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score_candidates-best.txt ${folder}/gold.test -t best
+perl ${folder}/score.pl Result_Italian/dbmdz_electra-base-italian-xxl-cased-discriminator_candidates2reranking_score_candidates-oot.txt ${folder}/gold.test -t oot
+perl ${folder}/score.pl Result_Italian/dbmdz_electra-base-italian-xxl-cased-discriminator_candidates2reranking_score_candidates-best.txt ${folder}/gold.test -t best
 ```
