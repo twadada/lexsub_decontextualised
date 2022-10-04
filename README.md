@@ -108,7 +108,7 @@ tail -n 1 result.txt
 
 2. Download test data at the [EVALITA 2009 workshop page](https://www.evalita.it/campaigns/evalita-2009/tasks/lexical-substitution/)
 
-3. Prepare input files using the following command:
+3. Prepare input files using the following command (**This code requires the spaCy version be "3.2.2"**):
 ```
 python EVALITA_preprocess.py -folder path_to_EVALITA_data 
 ```
@@ -138,7 +138,7 @@ CUDA_VISIBLE_DEVICES=0 python reranking.py -candidates ${candidates} -folder ${f
 This will produce the file "electra-base-italian-xxl-cased-discriminator_candidates2reranking_score.pkl" in the "Result_Italian" folder. 
 
 6. Prepare files for the EVALITA-2009 evaluation script using the following command:
-(**Make sure the spaCy version is "3.2.2" before running this code**)
+(**This code requires the spaCy version be "3.2.2"**)
 ```
 python EVALITA_postprocess.py -i Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score.pkl -gold path_to_EVALITA_data/gold.test
 ```
