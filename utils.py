@@ -2,20 +2,32 @@ from transformers.models.roberta.modeling_roberta import gelu as roberta_gelu
 from transformers.models.mpnet.modeling_mpnet import gelu as mpnet_gelu
 from transformers.models.electra.modeling_electra import get_activation as electra_get_activation
 from transformers.models.bart.modeling_bart import shift_tokens_right as mono_shift_tokens_right
-import sys
-sys.path.insert(1, '../')
+# import sys
+# sys.path.insert(1, '../')
 import torch
-import transformers
 import numpy as np
-import pickle
-import re
-
-from transformers import BertJapaneseTokenizer, XLNetLMHeadModel, XLNetTokenizer,ElectraTokenizer,ElectraModel,ElectraForPreTraining,MBart50TokenizerFast,MBartForConditionalGeneration,T5Tokenizer, BartTokenizer,AlbertTokenizer, GPT2Tokenizer, OpenAIGPTTokenizer,OpenAIGPTLMHeadModel, GPT2LMHeadModel, AlbertForMaskedLM, BartForConditionalGeneration, XLMWithLMHeadModel, CamembertForMaskedLM, BertForMaskedLM, BertTokenizer, BertModel, AutoTokenizer, AutoModel, RobertaForMaskedLM, T5ForConditionalGeneration, T5EncoderModel, M2M100ForConditionalGeneration,M2M100Tokenizer,MPNetTokenizer,MPNetForMaskedLM, PegasusTokenizer,PegasusForConditionalGeneration
-from SpanBERT.code.pytorch_pretrained_bert.tokenization import BertTokenizer as SpanBertTokenizer
-from SpanBERT.code.pytorch_pretrained_bert.modeling import BertForMaskedLM_SBO as SpanBertForMaskedLM_SBO
+from transformers import XLNetLMHeadModel, XLNetTokenizer,ElectraTokenizer,ElectraModel,ElectraForPreTraining,MBart50TokenizerFast,MBartForConditionalGeneration,T5Tokenizer, BartTokenizer,AlbertTokenizer, GPT2Tokenizer, OpenAIGPTTokenizer,OpenAIGPTLMHeadModel, GPT2LMHeadModel, AlbertForMaskedLM, BartForConditionalGeneration, XLMWithLMHeadModel, CamembertForMaskedLM, BertForMaskedLM, BertTokenizer, BertModel, AutoTokenizer, AutoModel, RobertaForMaskedLM, T5ForConditionalGeneration, T5EncoderModel, M2M100ForConditionalGeneration,M2M100Tokenizer,MPNetTokenizer,MPNetForMaskedLM, PegasusTokenizer,PegasusForConditionalGeneration
+# from SpanBERT.code.pytorch_pretrained_bert.tokenization import BertTokenizer as SpanBertTokenizer
+# from SpanBERT.code.pytorch_pretrained_bert.modeling import BertForMaskedLM_SBO as SpanBertForMaskedLM_SBO
 
 #PADDING TEXT for XLNet to encode a short text (common practice)
 PADDING_TEXT = "Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla. <eod> </s> <eos>"
+
+
+#
+# def SpanBert_tok_CLS_SEP(tokenizer, sent_list):
+#     out = []
+#     for sent in sent_list:
+#         sent_id = tokenizer.convert_tokens_to_ids(tokenizer.tokenize(sent))
+#         if len(sent_id)<510:
+#             sent_id = [tokenizer.cls_token_id]+ sent_id +[tokenizer.sep_token_id]
+#             out.append(sent_id)
+#         else:
+#             print(sent)
+#             print(tokenizer.tokenize(sent))
+#     return out
+#
+
 
 def load_w2v(file, word_list = None):
     word2vec = {}
@@ -54,35 +66,6 @@ def Read_tgtsent(tgt_sent, model):
         target_sentences.append(line)
     return target_sentences
 
-def Read_vecfiles_multi(vec_folders, layers, word_list = None):
-    emb_list = [[] for _ in range(len(layers))] #L
-    # emb_list: L, K_vec
-    Vocab = None
-    for i in range(len(vec_folders)):
-        for j in range(len(layers)):
-            l = layers[j]
-            emb = []
-            Vocab_tmp = []
-            folder = vec_folders[i] #bert-large-uncased_k4/K4/K0
-            file = folder+"/vec"+str(l)+".txt" #bert-large-uncased_k4/K4/K0/vec${l}.txt
-            vec_tmp = load_w2v(file, word_list)
-            for w in vec_tmp.keys():
-                Vocab_tmp.append(w)
-                emb.append(vec_tmp[w])
-            emb = torch.FloatTensor(np.array(emb)) #V, dim
-            # emb_list_orig[j].append(emb)
-            emb_list[j].append(emb) #k, V, dim
-            if Vocab is None:
-                Vocab = np.array(Vocab_tmp)
-            else:
-                assert all(Vocab == np.array(Vocab_tmp))
-    for j in range(len(layers)):
-        emb_list[j] = torch.stack(emb_list[j], dim=0).to("cuda")  # L, k, V, emb
-    word2id = {}
-    for w in Vocab:
-        word2id[w] = len(word2id)
-    print("V: ",len(Vocab))
-    return Vocab, word2id, emb_list
 
 def Read_Embfiles(vec_folders):
     # vec_folders: K
@@ -173,20 +156,6 @@ def Identify_Indices(tokenised_sentence_ids, phrase_ids, mask_ids, tokenizer):
     phrase_col_idx = np.array(phrase_col_idx)  # bs, N_mask
     phrase_row_idx = np.arange(len(phrase_col_idx))[:, None]  # bs, 1
     return out, phrase_row_idx, phrase_col_idx
-
-
-def SpanBert_tok_CLS_SEP(tokenizer, sent_list):
-    out = []
-    for sent in sent_list:
-        sent_id = tokenizer.convert_tokens_to_ids(tokenizer.tokenize(sent))
-        if len(sent_id)<510:
-            sent_id = [tokenizer.cls_token_id]+ sent_id +[tokenizer.sep_token_id]
-            out.append(sent_id)
-        else:
-            print(sent)
-            print(tokenizer.tokenize(sent))
-    return out
-
 
 def tokenise_phrase(model, tokenizer, phrase):
     assert phrase[0] == " " #add space for SentencePiece
@@ -462,13 +431,6 @@ def Get_model(model_path, is_cuda):
         model.to(device)
         model.Output_layer = model.lm_head.decoder.weight.data
         model.model_name ="roberta"
-    elif model_path.startswith("cl-tohoku/bert"):
-        tokenizer = BertJapaneseTokenizer.from_pretrained(model_path)
-        model = BertForMaskedLM.from_pretrained(model_path)
-        model.model_name = "jbert"
-        model.to(device)
-        model.Output_layer = model.cls.predictions.decoder.weight.data
-        model.Output_layer_bias = model.cls.predictions.bias.data
     elif model_path.startswith("princeton-nlp/sup-simcse-bert-large-uncased"):
         tokenizer = AutoTokenizer.from_pretrained(model_path)
         model = BertForMaskedLM.from_pretrained(model_path)
@@ -564,23 +526,24 @@ def Get_model(model_path, is_cuda):
         tokenizer = OpenAIGPTTokenizer.from_pretrained(model_path)
 
     elif model_path.startswith("spanbert"):
-        space_as_token = False
-        #model = SpanBERTForMaskedLM.from_pretrained("../SpanBERT/model/"+model_path)
-        model = SpanBertForMaskedLM_SBO.from_pretrained("../SpanBERT/model/" + model_path)
-        model.to(device)
-        model.model_name = "spanbert"
-        model.Output_layer = model.cls.predictions.decoder.weight.data
-        model.Output_layer_bias = model.cls.predictions.bias.data
-        tokenizer = SpanBertTokenizer.from_pretrained(model_path, do_lower_case=False)
-        tokenizer.mask_token = "[MASK]"
-        tokenizer.mask_token_id = tokenizer.convert_tokens_to_ids(["[MASK]"])[0]
-        tokenizer.pad_token = "[PAD]"
-        tokenizer.pad_token_id = tokenizer.convert_tokens_to_ids(["[PAD]"])[0]
-        tokenizer.sep_token = "[SEP]"
-        tokenizer.sep_token_id = tokenizer.convert_tokens_to_ids(["[SEP]"])[0]
-        tokenizer.cls_token = "[CLS]"
-        tokenizer.cls_token_id = tokenizer.convert_tokens_to_ids(["[CLS]"])[0]
-        tokenizer.name_or_path = model_path
+        raise NotImplementedError
+        # space_as_token = False
+        # #model = SpanBERTForMaskedLM.from_pretrained("../SpanBERT/model/"+model_path)
+        # model = SpanBertForMaskedLM_SBO.from_pretrained("../SpanBERT/model/" + model_path)
+        # model.to(device)
+        # model.model_name = "spanbert"
+        # model.Output_layer = model.cls.predictions.decoder.weight.data
+        # model.Output_layer_bias = model.cls.predictions.bias.data
+        # tokenizer = SpanBertTokenizer.from_pretrained(model_path, do_lower_case=False)
+        # tokenizer.mask_token = "[MASK]"
+        # tokenizer.mask_token_id = tokenizer.convert_tokens_to_ids(["[MASK]"])[0]
+        # tokenizer.pad_token = "[PAD]"
+        # tokenizer.pad_token_id = tokenizer.convert_tokens_to_ids(["[PAD]"])[0]
+        # tokenizer.sep_token = "[SEP]"
+        # tokenizer.sep_token_id = tokenizer.convert_tokens_to_ids(["[SEP]"])[0]
+        # tokenizer.cls_token = "[CLS]"
+        # tokenizer.cls_token_id = tokenizer.convert_tokens_to_ids(["[CLS]"])[0]
+        # tokenizer.name_or_path = model_path
 
     elif model_path.startswith("albert"):
         tokenizer = AlbertTokenizer.from_pretrained(model_path)
@@ -636,28 +599,6 @@ def Get_model(model_path, is_cuda):
         model.to(device)
         model.Output_layer = None
         model.Output_layer_bias = None
-    elif model_path=="Helsinki-NLP/opus-mt-en-de":
-        from transformers import MarianTokenizer
-        '''        
-        tokenizer = MarianTokenizer.from_pretrained("Helsinki-NLP/opus-mt-en-de")
-        src_texts = ["I am a small frog.", "Tom asked his teacher for advice."]
-        tgt_texts = ["Ich bin ein kleiner Frosch.", "Tom bat seinen Lehrer um Rat."]  # optional
-        inputs = tokenizer(src_texts, return_tensors="pt", padding=True)
-        with tokenizer.as_target_tokenizer():
-            labels = tokenizer(tgt_texts, return_tensors="pt", padding=True)
-        inputs["labels"] = labels["input_ids"]
-        # keys  [input_ids, attention_mask, labels].        
-        outputs = model(**inputs)
-        encoder_outputs = model.model.encoder(**inputs,output_hidden_states=True)
-        '''
-        from transformers import MarianMTModel, MarianTokenizer
-        model = MarianMTModel.from_pretrained(model_path)
-        tokenizer = MarianTokenizer.from_pretrained(model_path)
-        model.to(device)
-        model.Output_layer = None
-        model.Output_layer = None
-        model.Output_layer_bias = None
-        model.model_name = "marian"
     elif model_path.startswith("facebook/bart"):
         space_as_token = True
         tokenizer = BartTokenizer.from_pretrained(model_path)

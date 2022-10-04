@@ -5,7 +5,7 @@ import Levenshtein
 import pickle
 import torch.nn.functional  as F
 import argparse
-from utils import Encode_LM, Get_model, SpanBert_tok_CLS_SEP, Identify_Indices,Read_tgtsent, Read_Embfiles
+from utils import Encode_LM, Get_model, Identify_Indices, Read_tgtsent, Read_Embfiles
 import sys
 sys.path.insert(1, '../')
 
@@ -59,8 +59,9 @@ if __name__ == "__main__":
 
     input_ids = torch.cuda.LongTensor([[1, 2]])
     if model.model_name=="spanbert":
-        N_layer = 25
-        tgt_layers = list(range(3, N_layer - 2))
+        raise NotImplementedError
+        # N_layer = 25
+        # tgt_layers = list(range(3, N_layer - 2))
     elif model.model_name in ['jbert',"bert",'electra','sbert-bert','deberta-v3']:
         outputs = model(input_ids=input_ids, output_hidden_states=True)
         N_layer = len(outputs["hidden_states"])  # 13 or 25
@@ -130,7 +131,8 @@ if __name__ == "__main__":
                 mask_ids = tokenizer(token)["input_ids"][1:-1]  # remove CLS/SEP
 
             if model.model_name == 'spanbert':
-                sentences = SpanBert_tok_CLS_SEP(tokenizer, input_sentence)
+                raise NotImplementedError
+                # sentences = SpanBert_tok_CLS_SEP(tokenizer, input_sentence)
             else:
                 sentences = tokenizer(input_sentence)["input_ids"]
 

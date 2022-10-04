@@ -6,7 +6,7 @@ import numpy as np
 import pickle
 import torch.nn.functional  as F
 import argparse
-from utils import tokenise_phrase, Encode_LM, Get_model, SpanBert_tok_CLS_SEP, Identify_Indices, Read_tgtsent
+from utils import tokenise_phrase, Encode_LM, Get_model, Identify_Indices, Read_tgtsent
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -51,12 +51,12 @@ if __name__ == "__main__":
 
     input_ids = torch.cuda.LongTensor([[1, 2]])
     if model.model_name == "spanbert":
-        N_layer = 25
-        if opt.out_allL:
-            tgt_layers = list(range(N_layer))
-        else:
-            tgt_layers = list(range(3, N_layer - 2))
-
+        raise NotImplementedError
+        # N_layer = 25
+        # if opt.out_allL:
+        #     tgt_layers = list(range(N_layer))
+        # else:
+        #     tgt_layers = list(range(3, N_layer - 2))
     elif model.model_name in ['deberta-v3',"bert", 'electra', 'sbert-bert']:
         outputs = model(input_ids=input_ids, output_hidden_states=True)
         N_layer = len(outputs["hidden_states"])  # 13 or 25
@@ -126,7 +126,8 @@ if __name__ == "__main__":
                 else:
                     token = "<mask>"
             if model.model_name =='spanbert':
-                sentences = SpanBert_tok_CLS_SEP(tokenizer, sentences_untok)
+                raise NotImplementedError
+                # sentences = SpanBert_tok_CLS_SEP(tokenizer, sentences_untok)
             else:
                 sentences = tokenizer(sentences_untok)["input_ids"] #tokenise
 
