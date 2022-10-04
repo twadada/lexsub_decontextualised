@@ -13,7 +13,7 @@ Decontextualised embeddings used in our English and Italian experiments are avai
 3. Prepare input files using the following command:
 
 ```
-python swords_preprocess.py -swords_path path_to_SWORDS -data_split test
+python swords_preprocess.py -folder path_to_SWORDS -data_split test
 ```
 **This will produce the files named "swords_masked_sent_test.txt" and "swords_substitute_cands_list_test.pkl"**. In the first file, each line contains a target word and its context (seperated by a tab space "\t"), where the target word is replaced with \<mask\>. (e.g. "substitution\tWe propose a new method for lexical \<mask\> using pre-trained language models."). The second file contains a list of gold candidates (used for the ranking task).
 
@@ -103,4 +103,15 @@ tail -n 1 result.txt
 ```
 
 ## Replicate Italian Experiments (Using ELECTRA)
-todo
+
+1. Download decontextualised embeddings "electra-base-italian-xxl-cased-discriminator.tar.bz2" from [this Bitbucket repository](https://bitbucket.org/TakashiW/lexical_substitution/src/main).
+
+2. Download test data at the [EVALITA 2009 workshop page](https://www.evalita.it/campaigns/evalita-2009/tasks/lexical-substitution/)
+
+3. Prepare input files using the following command:
+```
+python EVALITA_preprocess.py -folder path_to_EVALITAdata 
+```
+
+
+
