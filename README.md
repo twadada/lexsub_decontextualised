@@ -49,13 +49,13 @@ python swords_postprocess.py -i Result/microsoft_deberta-v3-large_candidates2rer
 
 (If you want to evaluate the performance without reranking, set "-i" to "Result/microsoft_deberta-v3-large_beam_50lambda_val0.7_candidates2cossim_score.pkl" intead.)
 
-7. Calculate F scores using the evaluation script on [SWORDS](https://github.com/p-lambda/swords):
+7. Calculate F scores using the evaluation script on [SWORDS](https://github.com/p-lambda/swords) (Note that they require their docker environment to run the script):
 
 ```
 ./cli.sh eval swords-v1.1_test --result_json_fp notebooks/swords-v1.1_test_mygenerator.lsr.json --output_metrics_json_fp notebooks/mygenerator.metrics.json
 ```
 
-The result should be "33.61, 65.84, 24.52, 39.90 (lenient_a_f@10, lenient_c_f@10, strict_a_f@10, strict_c_f@10)" — the scores shown in Table 1. To evaluate another model, e.g. BERT, you can replace "model=microsoft/deberta-v3-large" with "model=bert-large-uncased" in the generation and reranking steps. 
+**The result should be "33.61, 65.84, 24.52, 39.90 (lenient_a_f@10, lenient_c_f@10, strict_a_f@10, strict_c_f@10)" — the scores shown in Table 1.** To evaluate another model, e.g. BERT, you can replace "model=microsoft/deberta-v3-large" with "model=bert-large-uncased" in the generation and reranking steps. 
 
 ### Ranking Performance
 
@@ -64,7 +64,7 @@ Replace "candidates=Result/microsoft_deberta-v3-large_beam_50lambda_val0.7_candi
 ```
 ./cli.sh eval swords-v1.1_test --result_json_fp notebooks/swords-v1.1_test_mygenerator.lsr.json --output_metrics_json_fp notebooks/mygenerator.metrics.json --metrics gap_rat
 ```
-The result should be "62.9" — the score shown in Table 2.
+**The result should be "62.93" — the score shown in Table 2.**
 
 ## Replicate Experiments on SemEval-07 (Using DeBERTa-V3)
 
