@@ -64,7 +64,7 @@ Replace "candidates=Result/microsoft_deberta-v3-large_beam_50lambda_val0.7_candi
 ```
 ./cli.sh eval swords-v1.1_test --result_json_fp notebooks/swords-v1.1_test_mygenerator.lsr.json --output_metrics_json_fp notebooks/mygenerator.metrics.json --metrics gap_rat
 ```
-The result should be "62.9" — the score shown in Table 2.
+**The result should be "62.93" — the score shown in Table 2.**
 
 ## Replicate Experiments on SemEval-07 (Using DeBERTa-V3)
 
