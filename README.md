@@ -101,7 +101,7 @@ python SemEval07_postprocess.py -file Result_SemEval/microsoft_deberta-v3-large_
 python2 jcs/evaluation/lst/lst_gap.py datasets/lst_all.gold ${out} result.txt no-mwe
 tail -n 1 result.txt
 ```
-The result should be "MEAN_GAP	0.649701137588"– the score shown in Table 2. If you see the error "ImportError: No module named jcs.evaluation.measures.generalized_average_precision", add the following lines at "jcs/evaluation/lst/lst_gap.py" before "import GeneralizedAveragePrecision", and try again.
+**The result should be "MEAN_GAP	0.649701137588" – the score shown in Table 2**. If you see the error "ImportError: No module named jcs.evaluation.measures.generalized_average_precision", add the following lines at "jcs/evaluation/lst/lst_gap.py" before "import GeneralizedAveragePrecision", and try again.
 
 ```
 import os
