@@ -28,7 +28,7 @@ model_basename=$(basename "$model")
 vec="${model_basename}/K4/K0/vec3-22.txt ${model_basename}/K4/K1/vec3-22.txt ${model_basename}/K4/K2/vec3-22.txt ${model_basename}/K4/K3/vec3-22.txt"
 CUDA_VISIBLE_DEVICES=0 python generate.py -folder ${folder} -model ${model} -vec ${vec}  -tgt_sent ${tgt_sent} -lev 0.5 -beam_size 50
 ```
-This will produce the file "microsoft_deberta-v3-large_beam_50lambda_val0.7_candidates2cossim_score.pkl" in the "Result" folder. The "-lev" option denotes the threshold for the edit-distance heuristic (which you may tune when running experiments on another lang), and "-beam_size" denotes the number of candidates to generate.
+This will produce the file "microsoft_deberta-v3-large_beam_50lambda_val0.7_candidates2cossim_score.pkl" in the "Result" folder. The "-lev" option denotes the threshold for the edit-distance heuristic (set "-lev 0" to disable this), and "-beam_size" denotes the number of candidates to generate.
 
 5. Rerank the candidates using the following command:
 
@@ -112,6 +112,42 @@ tail -n 1 result.txt
 ```
 python EVALITA_preprocess.py -folder path_to_EVALITAdata 
 ```
+This will produce the files "Italian_masked_sent.txt", "Italian_gold.pkl", and "tgt_lemma_pos_list.txt".
+
+4. Generate substitute candidates using the following command:
+
+```
+folder=Result_Italian
+tgt_sent=Italian_masked_sent.txt
+model=dbmdz/electra-base-italian-xxl-cased-discriminator
+model_basename=$(basename "$model")
+vec="${model_basename}/K4/K0/vec3-10.txt ${model_basename}/K4/K1/vec3-10.txt ${model_basename}/K4/K2/vec3-10.txt ${model_basename}/K4/K3/vec3-10.txt"
+CUDA_VISIBLE_DEVICES=0 python generate.py -folder ${folder} -model ${model} -vec ${vec}  -tgt_sent ${tgt_sent} -lev 0.5 -beam_size 50
+```
+This will produce the file "electra-base-italian-xxl-cased-discriminator_beam_50lambda_val0.7_candidates2cossim_score.pkl" in the "Result_Italian" folder. 
+
+5. Rerank the candidates using the following command:
+
+```
+folder=Result_Italian
+model=dbmdz/electra-base-italian-xxl-cased-discriminator
+candidates=Result_Italian/electra-base-italian-xxl-cased-discriminator_beam_50lambda_val0.7_candidates2cossim_score.pkl
+tgt_sent=Italian_masked_sent.txt
+CUDA_VISIBLE_DEVICES=0 python reranking.py -candidates ${candidates} -folder ${folder} -model ${model} -tgt_sent ${tgt_sent}
+```
+This will produce the file "electra-base-italian-xxl-cased-discriminator_candidates2reranking_score.pkl" in the "Result_Italian" folder. 
+
+6. Prepare files for the EVALITA-2009 evaluation script using the following command:
+
+```
+python EVALITA_postprocess.py -i Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score.pkl -gold path_to_EVALITA_data/gold.test
+```
+This will show F scores (as well as precision and recall) and the result is save as "Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score.pkl_scores.txt". **It will also produce "Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score.pkl_candidates-oot.txt" and "Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score.pkl_candidates-best.txt" in the "Result_Italian" folder.** These files are used as inputs for the EVALITA-2009 evaluation script.
 
 
-
+7. Calculate "best" and "oot" scores using the following commands:
+```
+folder=path_to_EVALITA_data
+perl ${folder}/score.pl Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score.pkl_candidates-oot.txt ${folder}/gold.test -t oot
+perl ${folder}/score.pl Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score.pkl_candidates-best.txt ${folder}/gold.test -t best
+```
