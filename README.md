@@ -3,7 +3,19 @@ Code for "Unsupervised Lexical Substitution with Decontextualised Embeddings" (C
 
 Decontextualised embeddings used in our English and Italian experiments are available at [this Bitbucket repository](https://bitbucket.org/TakashiW/lexical_substitution/src/main).
 
-## Replicate Experiments on SWORDS (Using DeBERTa-V3)
+# Dependencies
+
+* Python 3 (tested on 3.6.10)
+* numpy
+* torch 1.7.1 or larger
+* tqdm
+* spacy 3.2.2
+* Levenshtein 0.19.1
+* transformers 4.18.0
+
+
+# Reproduce Experiments
+## Reproduce Experiments on SWORDS (Using DeBERTa-V3)
 ### Generation Performance
 
 1. Download decontextualised embeddings "deberta-v3-large.tar.bz2" from [this Bitbucket repository](https://bitbucket.org/TakashiW/lexical_substitution/src/main) and decompress the folder, e.g. using the command "tar -xf deberta-v3-large.tar.bz2".
@@ -66,7 +78,7 @@ Replace "candidates=Result/microsoft_deberta-v3-large_beam_50lambda_val0.7_candi
 ```
 **The result should be "62.93" — the score shown in Table 2.**
 
-## Replicate Experiments on SemEval-07 (Using DeBERTa-V3)
+## Reproduce Experiments on SemEval-07 (Using DeBERTa-V3)
 
 1. Download SemEval-07 data ("All Gold Standard and Scoring Data") at [http://www.dianamccarthy.co.uk/task10index.html](http://www.dianamccarthy.co.uk/task10index.html)
 
@@ -108,7 +120,7 @@ import os
 sys.path.append('path_to_the_cloned_dir')
 ```
 
-## Replicate Italian Experiments (Using ELECTRA)
+## Reproduce Italian Experiments (Using ELECTRA)
 
 1. Download and decompress the decontextualised embeddings "electra-base-italian-xxl-cased-discriminator.tar.bz2" from [this Bitbucket repository](https://bitbucket.org/TakashiW/lexical_substitution/src/main).
 
