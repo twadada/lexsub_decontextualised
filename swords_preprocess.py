@@ -6,7 +6,7 @@ import json
 import pickle
 parser = argparse.ArgumentParser()
 parser.add_argument(
-    '-swords_path',
+    '-folder',
     help='model')
 parser.add_argument(
     '-data_split',
