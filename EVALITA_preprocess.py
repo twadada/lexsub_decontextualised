@@ -37,7 +37,6 @@ with open("Italian_gold.pkl", 'wb') as f:
     pickle.dump(w_list_all, f, pickle.HIGHEST_PROTOCOL)
 
 
-
 lines = []
 tgts = []
 flag = False
@@ -88,28 +87,12 @@ for line in open(opt.folder+"/lexsub_test.xml", errors='ignore'):
                 # if tgt != tgt_list[count-1]:
                 #     print(tgt+"@"+tgt_list[count-1])
                 assert w.split("</head>")[-1]== ""
-                # if len(words) and tgt_lemma_pos.split(".")[-1]=="n":
-                #     if words[-1] =="la":
-                #         la_idx.append(len(lines))
-                #     elif words[-1] =="le":
-                #         le_idx.append(len(lines))
-                #     elif words[-1] =="il":
-                #         il_idx.append(len(lines))
-                #     elif words[-1] =="i":
-                #         i_idx.append(len(lines))
-                #     elif words[-1] =="un":
-                #         un_idx.append(len(lines))
-                #     elif words[-1] =="una":
-                #         una_idx.append(len(lines))
                 words.append("<mask>")
             elif w.startswith("<head>"):
                 #e.g. <head>auto</head>mobilistica
                 tgt_words = w.split("<head>")[1].split("</head>")
                 assert len(tgt_words)==2, w + "@"+line
                 tgt = tgt_words[0]
-                # if tgt != tgt_list[count-1]:
-                #     print(tgt+"@"+tgt_list[count-1])
-                # assert w.split("</head>")[-1]== ""
                 words.append("<mask>")
                 words.append(tgt_words[1]) #mobilistica
             elif w.endswith("</head>"):
@@ -117,9 +100,6 @@ for line in open(opt.folder+"/lexsub_test.xml", errors='ignore'):
                 tgt_words = w.split("</head>")[0].split("<head>")
                 assert len(tgt_words)==2
                 tgt = tgt_words[1]
-                # if tgt != tgt_list[count-1]:
-                #     print(tgt+"@"+tgt_list[count-1])
-                # assert w.split("</head>")[-1]== ""
                 words.append(tgt_words[0]) #something
                 words.append("<mask>")
             elif w=="di<head>chiara</head>va": #one exception
@@ -127,10 +107,19 @@ for line in open(opt.folder+"/lexsub_test.xml", errors='ignore'):
                 words.append("di")
                 words.append("<mask>")
                 words.append("va")
+            elif w=="tras<head>cura</head>tezze": #one exception
+                tgt = "cura"
+                words.append("tras")
+                words.append("<mask>")
+                words.append("tezze")
+            elif w=="assi<head>cura</head>rsi": #one exception
+                tgt = "cura"
+                words.append("assi")
+                words.append("<mask>")
+                words.append("rsi")
             else:
                 words.append(w)
-        if len(w_list_all[count-1]): #if there are any candidates
-            assert tgt is not None
+        assert tgt is not None, words
         if tgt[-1]=="'":
             tgt = tgt[:-1] #remove apos
         lines.append(tgt + "\t" +" ".join(words) )
