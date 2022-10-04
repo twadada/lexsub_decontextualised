@@ -73,7 +73,7 @@ The result should be "62.9" — the score shown in Table 2.
 2. Prepare input files using the following command:
 
 ```
-python SemEval07_preprocess.py -folder path_to_SemEvaldata
+python SemEval07_preprocess.py -folder path_to_SemEval_data
 ```
 **This will produce "SemEval07_masked_sent.txt", "SemEval07_candidates.pkl" and SemEval07_tgtids.txt".**
 
@@ -110,7 +110,7 @@ tail -n 1 result.txt
 
 3. Prepare input files using the following command:
 ```
-python EVALITA_preprocess.py -folder path_to_EVALITAdata 
+python EVALITA_preprocess.py -folder path_to_EVALITA_data 
 ```
 This will produce the files "Italian_masked_sent.txt", "Italian_gold.pkl", and "tgt_lemma_pos_list.txt".
 
