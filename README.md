@@ -142,12 +142,12 @@ This will produce the file "electra-base-italian-xxl-cased-discriminator_candida
 ```
 python EVALITA_postprocess.py -i Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score.pkl -gold path_to_EVALITA_data/gold.test
 ```
-This will show F scores (as well as precision and recall) and the result is save as "Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score.pkl_scores.txt". **It will also produce "Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score.pkl_candidates-oot.txt" and "Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score.pkl_candidates-best.txt" in the "Result_Italian" folder.** These files are used as inputs for the EVALITA-2009 evaluation script.
+This will show F scores (as well as precision and recall) and the result is save as "Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score_scores.txt". **It will also produce "Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score_candidates-oot.txt" and "Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score_candidates-best.txt" in the "Result_Italian" folder.** These files are used as inputs for the EVALITA-2009 evaluation script.
 
 
 7. Calculate "best" and "oot" scores using the following commands:
 ```
 folder=path_to_EVALITA_data
-perl ${folder}/score.pl Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score.pkl_candidates-oot.txt ${folder}/gold.test -t oot
-perl ${folder}/score.pl Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score.pkl_candidates-best.txt ${folder}/gold.test -t best
+perl ${folder}/score.pl Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score_candidates-oot.txt ${folder}/gold.test -t oot
+perl ${folder}/score.pl Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score_candidates-best.txt ${folder}/gold.test -t best
 ```
