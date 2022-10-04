@@ -110,7 +110,7 @@ sys.path.append('path_to_the_cloned_dir')
 
 ## Replicate Italian Experiments (Using ELECTRA)
 
-1. Download decontextualised embeddings "electra-base-italian-xxl-cased-discriminator.tar.bz2" from [this Bitbucket repository](https://bitbucket.org/TakashiW/lexical_substitution/src/main).
+1. Download and decompress the decontextualised embeddings "electra-base-italian-xxl-cased-discriminator.tar.bz2" from [this Bitbucket repository](https://bitbucket.org/TakashiW/lexical_substitution/src/main).
 
 2. Download test data at the [EVALITA 2009 workshop page](https://www.evalita.it/campaigns/evalita-2009/tasks/lexical-substitution/)
 
