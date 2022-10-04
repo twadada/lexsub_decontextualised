@@ -1,7 +1,7 @@
 # lexsub_decontextualised
 Code for "Unsupervised Lexical Substitution with Decontextualised Embeddings" (COLING 2022)
 
-Decontextualised embeddings used in our paper are available at [this Bitbucket repository](https://bitbucket.org/TakashiW/lexical_substitution/src/main).
+Decontextualised embeddings used in our English and Italian experiments are available at [this Bitbucket repository](https://bitbucket.org/TakashiW/lexical_substitution/src/main).
 
 ## Replicate Experiments on SWORDS (Using DeBERTa-V3)
 ### Generation Performance
