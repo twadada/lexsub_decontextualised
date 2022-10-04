@@ -146,9 +146,10 @@ This will produce the file "dbmdz_electra-base-italian-xxl-cased-discriminator_c
 6. Prepare files for the EVALITA-2009 evaluation script using the following command:
 (**This code requires the spaCy version be "3.2.2"**)
 ```
-python EVALITA_postprocess.py -i Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score.pkl -gold path_to_EVALITA_data/gold.test
+folder=path_to_EVALITA_data
+python EVALITA_postprocess.py -i Result_Italian/dbmdz_electra-base-italian-xxl-cased-discriminator_candidates2reranking_score.pkl -gold ${folder}/gold.test
 ```
-This will show F scores (as well as precision and recall) and the result is save as "Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score_scores.txt". **It will also produce "Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score_candidates-oot.txt" and "Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score_candidates-best.txt" in the "Result_Italian" folder.** These files are used as inputs for the EVALITA-2009 evaluation script.
+**This will lemmatise the generated candidates and show the F score (as well as precision and recall)**, and the result is save as "Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score_scores.txt". **It will also produce "Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score_candidates-oot.txt" and "Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score_candidates-best.txt" in the "Result_Italian" folder.**, which are used as inputs for the EVALITA-2009 evaluation script below.
 
 
 7. Calculate "best" and "oot" scores using the following commands:
