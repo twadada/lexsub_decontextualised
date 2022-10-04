@@ -1,5 +1,7 @@
 # download test data at https://www.evalita.it/campaigns/evalita-2009/tasks/lexical-substitution
 import argparse
+import spacy
+assert spacy.__version__ == "3.2.2", spacy.__version__
 parser = argparse.ArgumentParser()
 parser.add_argument(
     '-folder')
@@ -41,8 +43,6 @@ lines = []
 tgts = []
 flag = False
 count = 0
-import spacy
-assert spacy.__version__ == "3.2.2", spacy.__version__
 nlp = spacy.load("it_core_news_sm")
 idx = []
 # un_idx= []
@@ -120,8 +120,8 @@ for line in open(opt.folder+"/lexsub_test.xml", errors='ignore'):
             else:
                 words.append(w)
         assert tgt is not None, words
-        if tgt[-1]=="'":
-            tgt = tgt[:-1] #remove apos
+        # if tgt[-1]=="'":
+        #     tgt = tgt[:-1] #remove apos
         lines.append(tgt + "\t" +" ".join(words) )
         tgt_lemma_pos_list.append(tgt_lemma_pos)
         flag = False
