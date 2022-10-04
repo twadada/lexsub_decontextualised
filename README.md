@@ -161,7 +161,7 @@ This will produce the file "dbmdz_electra-base-italian-xxl-cased-discriminator_c
 folder=path_to_EVALITA_data
 python EVALITA_postprocess.py -i Result_Italian/dbmdz_electra-base-italian-xxl-cased-discriminator_candidates2reranking_score.pkl -gold ${folder}/gold.test
 ```
-**This will lemmatise the generated candidates and show the F score (which should be 19.0) as well as precision and recall**. The results are saved as "Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score_scores.txt". **It will also produce "Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score_candidates-oot.txt" and "Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score_candidates-best.txt" in the "Result_Italian" folder.**, which are used as inputs for the EVALITA-2009 evaluation script below.
+**This will lemmatise the generated candidates and show the F score (which should be 19.0) as well as precision and recall**. The results are saved as "Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score_scores.txt". **It will also produce "Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score_candidates-oot.txt" and "Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score_candidates-best.txt" in the "Result_Italian" folder**, which are used as inputs for the EVALITA-2009 evaluation script below.
 
 
 7. Calculate "best" and "oot" scores using the following commands:
