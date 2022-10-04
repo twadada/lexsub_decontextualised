@@ -138,7 +138,7 @@ CUDA_VISIBLE_DEVICES=0 python reranking.py -candidates ${candidates} -folder ${f
 This will produce the file "electra-base-italian-xxl-cased-discriminator_candidates2reranking_score.pkl" in the "Result_Italian" folder. 
 
 6. Prepare files for the EVALITA-2009 evaluation script using the following command:
-
+(**Make sure the spaCy version is "3.2.2" before running this code**)
 ```
 python EVALITA_postprocess.py -i Result_Italian/electra-base-italian-xxl-cased-discriminator_candidates2reranking_score.pkl -gold path_to_EVALITA_data/gold.test
 ```
