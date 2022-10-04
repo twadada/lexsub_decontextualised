@@ -10,11 +10,14 @@ parser.add_argument(
 opt = parser.parse_args()
 sid2cand = {} # sent_id -> candidates
 word2cand = {} # e.g. bright.a -> candidates
-
+emplty_count = 0
 for file in [opt.folder+"/trial/gold.trial", opt.folder+"/scoring/gold"]:
     for line in open(file, errors='ignore'):
         #bright.a 1 :: intelligent 3;clever 3;smart 1;
         line = line.rstrip("\n").split(" :: ")
+        if line==['']:
+            emplty_count+=1
+            continue
         w_and_id = line[0].split() #bright.a 1
         s_id = int(w_and_id[1]) #1; 1~2010
         if len(w_and_id[0].split(".")) != 2:
@@ -39,6 +42,8 @@ for file in [opt.folder+"/trial/gold.trial", opt.folder+"/scoring/gold"]:
             word2cand[w_and_id[0]] = set(w_list)
         else:
             word2cand[w_and_id[0]].update(w_list)
+
+assert emplty_count==2
 
 tgt_lemma_orig_list = []
 tgt_lemma_list = []
