@@ -16,7 +16,7 @@ opt = parser.parse_args()
 substitute_cands_list = []
 
 f_sent  = open("swords_masked_sent_"+opt.data_split+".txt", "w")
-with gzip.open(opt.swords_path + "/assets/parsed/swords-v1.1_"+opt.data_split+".json.gz", 'r') as f:
+with gzip.open(opt.folder + "/assets/parsed/swords-v1.1_"+opt.data_split+".json.gz", 'r') as f:
     swords = json.load(f)
 
 x = 0
