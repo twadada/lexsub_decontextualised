@@ -61,7 +61,7 @@ python swords_postprocess.py -i Result/microsoft_deberta-v3-large_candidates2rer
 
 (If you want to evaluate the performance without reranking, set "-i" to "Result/microsoft_deberta-v3-large_beam_50lambda_val0.7_candidates2cossim_score.pkl" intead.)
 
-7. Calculate F scores using the evaluation script on [SWORDS](https://github.com/p-lambda/swords) (Note that they require their docker environment to run the script):
+7. Calculate F scores using the evaluation script on [SWORDS](https://github.com/p-lambda/swords) (**Note that they require their docker environment to run the script**):
 
 ```
 ./cli.sh eval swords-v1.1_test --result_json_fp notebooks/swords-v1.1_test_mygenerator.lsr.json --output_metrics_json_fp notebooks/mygenerator.metrics.json
