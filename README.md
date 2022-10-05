@@ -9,6 +9,7 @@ Decontextualised embeddings used in our English and Italian experiments are avai
 
 * Levenshtein
 * tqdm
+* sentencepiece
 * torch 1.7.1
 * spacy 3.2.2
 * transformers 4.18.0
