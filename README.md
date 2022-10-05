@@ -128,6 +128,7 @@ sys.path.append('path_to_the_cloned_dir')
 
 3. Prepare input files using the following command (**This code requires the spaCy version be "3.2.2"**):
 ```
+python -m spacy download it_core_news_sm
 python EVALITA_preprocess.py -folder path_to_EVALITA_data 
 ```
 This will produce the files "Italian_masked_sent.txt", "Italian_gold.pkl", and "tgt_lemma_pos_list.txt".
