@@ -1,5 +1,6 @@
+--find-links https://download.pytorch.org/whl/torch_stable.html
 Levenshtein>=0.19.1
-torch==1.7.1
+torch==1.7.1+cu101
 tqdm>=4.64.0
 transformers==4.18.0
 spacy==3.2.2
