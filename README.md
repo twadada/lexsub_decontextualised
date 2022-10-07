@@ -6,13 +6,13 @@ Decontextualised embeddings used in our English and Italian experiments are avai
 # Dependencies
 
 * Python 3 (tested on 3.6.10)
-* numpy
-* torch 1.7.1
-* tqdm
-* spacy 3.2.2
-* Levenshtein 0.19.1
-* transformers 4.18.0
 
+* Levenshtein
+* tqdm
+* sentencepiece
+* torch 1.7.1
+* spacy 3.2.2
+* transformers 4.18.0
 
 # Reproduce Experiments
 ## Reproduce Experiments on SWORDS (Using DeBERTa-V3)
@@ -128,6 +128,7 @@ sys.path.append('path_to_the_cloned_dir')
 
 3. Prepare input files using the following command (**This code requires the spaCy version be "3.2.2"**):
 ```
+python -m spacy download it_core_news_sm
 python EVALITA_preprocess.py -folder path_to_EVALITA_data 
 ```
 This will produce the files "Italian_masked_sent.txt", "Italian_gold.pkl", and "tgt_lemma_pos_list.txt".
