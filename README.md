@@ -3,6 +3,7 @@ Code for "Unsupervised Lexical Substitution with Decontextualised Embeddings" (C
 
 Decontextualised embeddings used in our English and Italian experiments are available at [this Bitbucket repository](https://bitbucket.org/TakashiW/lexical_substitution/src/main). If you use the code or embeddings, please cite the following paper.
 
+```
 @inproceedings{wada-etal-2022-unsupervised,
     title = "Unsupervised Lexical Substitution with Decontextualised Embeddings",
     author = "Wada, Takashi  and
@@ -15,9 +16,8 @@ Decontextualised embeddings used in our English and Italian experiments are avai
     address = "Gyeongju, Republic of Korea",
     publisher = "International Committee on Computational Linguistics",
     url = "https://aclanthology.org/2022.coling-1.366",
-    pages = "4172--4185",
-    abstract = "We propose a new unsupervised method for lexical substitution using pre-trained language models. Compared to previous approaches that use the generative capability of language models to predict substitutes, our method retrieves substitutes based on the similarity of contextualised and decontextualised word embeddings, i.e. the average contextual representation of a word in multiple contexts. We conduct experiments in English and Italian, and show that our method substantially outperforms strong baselines and establishes a new state-of-the-art without any explicit supervision or fine-tuning. We further show that our method performs particularly well at predicting low-frequency substitutes, and also generates a diverse list of substitute candidates, reducing morphophonetic or morphosyntactic biases induced by article-noun agreement.",
-}
+    pages = "4172--4185"}
+```
 
 # Dependencies
 
