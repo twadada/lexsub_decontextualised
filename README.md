@@ -1,7 +1,23 @@
 # lexsub_decontextualised
-Code for "Unsupervised Lexical Substitution with Decontextualised Embeddings" (COLING 2022)
+Code for ["Unsupervised Lexical Substitution with Decontextualised Embeddings" (COLING 2022)](https://aclanthology.org/2022.coling-1.366)
 
-Decontextualised embeddings used in our English and Italian experiments are available at [this Bitbucket repository](https://bitbucket.org/TakashiW/lexical_substitution/src/main).
+Decontextualised embeddings used in our English and Italian experiments are available at [this Bitbucket repository](https://bitbucket.org/TakashiW/lexical_substitution/src/main). If you use the code or embeddings, please cite the following paper.
+
+```
+@inproceedings{wada-etal-2022-unsupervised,
+    title = "Unsupervised Lexical Substitution with Decontextualised Embeddings",
+    author = "Wada, Takashi  and
+      Baldwin, Timothy  and
+      Matsumoto, Yuji  and
+      Lau, Jey Han",
+    booktitle = "Proceedings of the 29th International Conference on Computational Linguistics",
+    month = oct,
+    year = "2022",
+    address = "Gyeongju, Republic of Korea",
+    publisher = "International Committee on Computational Linguistics",
+    url = "https://aclanthology.org/2022.coling-1.366",
+    pages = "4172--4185"}
+```
 
 # Dependencies
 
@@ -15,7 +31,7 @@ Decontextualised embeddings used in our English and Italian experiments are avai
 * transformers 4.18.0
 
 # Reproduce Experiments
-## Reproduce Experiments on SWORDS (Using DeBERTa-V3)
+## Reproduce Results on SWORDS (Using DeBERTa-V3)
 ### Generation Performance
 
 1. Download decontextualised embeddings "deberta-v3-large.tar.bz2" from [this Bitbucket repository](https://bitbucket.org/TakashiW/lexical_substitution/src/main) and decompress the folder, e.g. using the command "tar -xf deberta-v3-large.tar.bz2".
@@ -78,7 +94,7 @@ Replace "candidates=Result/microsoft_deberta-v3-large_beam_50lambda_val0.7_candi
 ```
 **The result should be "62.93" — the score shown in Table 2.**
 
-## Reproduce Experiments on SemEval-07 (Using DeBERTa-V3)
+## Reproduce Results on SemEval-07 (Using DeBERTa-V3)
 
 1. Download SemEval-07 data ("All Gold Standard and Scoring Data") at [http://www.dianamccarthy.co.uk/task10index.html](http://www.dianamccarthy.co.uk/task10index.html)
 
@@ -172,3 +188,29 @@ perl ${folder}/score.pl Result_Italian/dbmdz_electra-base-italian-xxl-cased-disc
 perl ${folder}/score.pl Result_Italian/dbmdz_electra-base-italian-xxl-cased-discriminator_candidates2reranking_score_candidates-oot.txt ${folder}/gold.test -t oot
 ```
 **The results should be best: 20.97 and oot: 51.15, as shown in Table 3**.
+
+
+# Generate Decontextualised Embeddings from Scratch
+You can generate decontextualised embeddings using your own data. 
+
+1. Collect sentences from monolingual data as follows:
+```
+wordfile=path_to_word_list
+monofile=path_to_monolingual_data
+folder=embedding_path_folder
+mkdir $folder
+python extract_sentence.py  -wordfile ${wordfile} -monofile ${monofile} -folder $folder
+```
+
+where "monofile" denotes text data containing one sentence per line, and "wordfile" denotes text data where each line contains one word that you want to obtain decontextualised embeddings for. This code will produce a file "${folder}/$(basename "$wordfile")_sent.pkl".
+
+2. Generate decontextualised embeddings as
+```
+mono_sent=${folder}/$(basename "$wordfile")_sent.pkl
+model=model_path (e.g. bert-large-uncased)
+CUDA_VISIBLE_DEVICES=0 python generate_decontext_embs.py -N_sample 300 -K 4 -folder $folder -model ${model} -mono_sent ${mono_sent}
+```
+
+where N denotes the maximum number of sentences to use, and K denotes the cluster size for K-means. If you feed multiple numbers, e.g. "-K 4 8 16", it will produce decontextualised embeddings for each cluster size. This will produce **"count.txt"**: each line contains "word", "N_sentences" and "cluster ids for each sentence", separated by a whitespace; **K1/K0/vec.txt**: decontextualised embeddings without clustering; **K4/K{0,1,2,3}/vec.txt**:  decontextualised embeddings for each cluster. **Note that all programmes accept the models that are used in our paper only**; if you want to try other models, please modify the code by yourself in "Encode_LM", "Get_model" and tokenise_phrase in utils.py and other several hard-coded lines in each python file.
+
+(Note) To acheive the best outcomes, you should use a monolingual language model that has a very large vocabulary size (e.g. DeBERTa-V3 in English), and tune the edit-distance threshold at the "-lev" option (which would vary a lot for each language). Instead of using a model with large vocab, you could also expand the LM vocabulary by yourself beforehand (e.g. by adding words in the BERT tokenizer and continuing to train BERT on MLM; there are several papers that do this) and use that model for lexical substitution. Also, since our reranking method did not work well for Italian in our experiments, you may also have a look at the performance without reranking.
