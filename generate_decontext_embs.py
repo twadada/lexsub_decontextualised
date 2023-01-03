@@ -5,7 +5,7 @@ import os
 import pickle
 import torch.nn.functional  as F
 import argparse
-from utils import tokenise_phrase, Encode_LM, Get_model,Identify_Indices
+from utils import tokenise_phrase, Encode_LM, Get_model, Identify_Indices
 from tqdm import tqdm
 
 # PADDING TEXT for XLNet to encode a short text (common practice)
@@ -198,8 +198,7 @@ if __name__ == "__main__":
                                 sentences_untok[j] = PADDING_TEXT + sentences_untok[j] # a common practice when encoding a short text using XLNet
                         # elif model.model_name =="spanbert":
                         #     sentences_tmp = SpanBert_tok_CLS_SEP(tokenizer, sentences_untok)
-                        else:
-                            sentences_tmp = tokenizer(sentences_untok)["input_ids"]
+                        sentences_tmp = tokenizer(sentences_untok)["input_ids"]
                         sentences = []
                         for x in sentences_tmp:
                             assert len(x) < 512
