@@ -227,7 +227,7 @@ if __name__ == "__main__":
                             for _k in range(len(k_class_list)): #save cluster id for each sent (for the purpose of analysis)
                                 f_count.write(veckey + " " + str(len(sentences_untok)) + " " + " ".join([str(e) for e in k_class_list[_k]]) + "\n")
                             phrase_all_states = phrase_all_states.mean(dim=2)  #L, bs, dim
-                            phrase_all_states = phrase_all_states[3:len(phrase_all_states)-2].mean(0).unsqueeze(0)
+                            phrase_all_states = phrase_all_states[target_layers].mean(0).unsqueeze(0)
                             phrase_all_states_mean = phrase_all_states.mean(dim=1).data.cpu().numpy()  # 1, dim
                             phrase_all_states = phrase_all_states.transpose(1, 0) #bs, 1, dim
                             phrase_all_states = phrase_all_states.data.cpu().numpy()
