@@ -1,6 +1,8 @@
 # lexsub_decontextualised
 Code for ["Unsupervised Lexical Substitution with Decontextualised Embeddings" (COLING 2022)](https://aclanthology.org/2022.coling-1.366)
 
+(**Code for "Unsupervised Lexical Simplification with Context Augmentation" (EMNLP 2023 Findings) will be released shortly**)
+
 Decontextualised embeddings used in our English and Italian experiments are available at [this Bitbucket repository](https://bitbucket.org/TakashiW/lexical_substitution/src/main). If you use the code or embeddings, please cite the following paper.
 
 ```
